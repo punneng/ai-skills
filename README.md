@@ -4,15 +4,15 @@ My collection of AI skills for use with [opencode](https://opencode.ai) and simi
 
 ## Structure
 
-Skills are organized by category and sub-category:
+Skills are organized into buckets and sub-buckets:
 
 ```
-ai-skills/
-├── engineering/
-│   └── spec-driven-development/
-│       ├── constitute/          # Create project constitution
-│       └── specify-feature/     # Create feature specs
-└── ...more categories coming
+skills/
+├── engineering/                       # bucket
+│   └── spec-driven-development/       # sub-bucket
+│       ├── constitute/                # Create project constitution
+│       └── specify-feature/           # Create feature specs
+└── ...more buckets coming
 ```
 
 Each skill lives in its own directory with a `SKILL.md` file that defines its instructions and workflows.
@@ -23,10 +23,10 @@ Skills are loaded from `~/.config/opencode/skills/`. To install a skill, symlink
 
 ```bash
 # Example: install all engineering skills
-ln -s "$(pwd)/engineering" ~/.config/opencode/skills/engineering
+ln -s "$(pwd)/skills/engineering" ~/.config/opencode/skills/engineering
 
 # Or install a specific skill
-ln -s "$(pwd)/engineering/spec-driven-development/constitute" ~/.config/opencode/skills/engineering/spec-driven-development/constitute
+ln -s "$(pwd)/skills/engineering/spec-driven-development/constitute" ~/.config/opencode/skills/engineering/spec-driven-development/constitute
 ```
 
 ## Skills
