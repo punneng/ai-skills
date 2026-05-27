@@ -29,13 +29,13 @@ Glob pattern: **/*.{py,rs,go,js,ts,tsx,java,c,cpp,h,swift,kt,cargo.toml,package.
 - If **source or project config files exist**, treat as an **existing project**.
 
 **Detect tool availability:**
-- Check if `grill-with-docs` skill is available (look for it in the available skills list or check if its SKILL.md exists at a known path).
-- If **grill-with-docs is available**, use it for all question-asking steps.
-- If **grill-with-docs is NOT available**, fall back to the Question tool for all question-asking steps.
+- Check if `grill-me` skill is available (look for it in the available skills list or check if its SKILL.md exists at a known path).
+- If **grill-me is available**, use it for all question-asking steps.
+- If **grill-me is NOT available**, fall back to the Question tool for all question-asking steps.
 
 ### Step 1a — New blank project: Get project overview
 
-**If using grill-with-docs:** Start a grill-with-docs session to extract the project overview. Ask questions one at a time, waiting for feedback on each before continuing. Provide your recommended answer for each question.
+**If using grill-me:** Start a grill-me session to extract the project overview. Ask questions one at a time, waiting for feedback on each before continuing. Provide your recommended answer for each question.
 
 Start with: "Tell me about your project at a high level. What are you building, and what problem does it solve?"
 
@@ -61,7 +61,7 @@ Analyze the existing project to extract as much context as possible:
 
 Present a concise summary of what was detected (language, framework, build system, project type) and ask structured questions for any gaps.
 
-**If using grill-with-docs:** Start a grill-with-docs session to fill gaps. Ask questions one at a time, waiting for feedback on each before continuing. Provide your recommended answer for each question.
+**If using grill-me:** Start a grill-me session to fill gaps. Ask questions one at a time, waiting for feedback on each before continuing. Provide your recommended answer for each question.
 
 Start with: "I detected a [language/framework] project. I still need: [list missing info]. Can you fill in the gaps?"
 
@@ -89,7 +89,7 @@ Continue gathering structured information. Use the detection context to tailor t
 2. **Tech stack** — "I detected [detected tech]. Are there any other components, constraints, or trade-offs I should document? Anything missing from the stack?"
 3. **Roadmap** — "I see the project already has code. What are the remaining phases? What's the definition of done?"
 
-**If using grill-with-docs:** Continue the grill session. Ask questions one at a time, waiting for feedback on each before continuing. Provide your recommended answer for each question.
+**If using grill-me:** Continue the grill session. Ask questions one at a time, waiting for feedback on each before continuing. Provide your recommended answer for each question.
 
 **If using Question tool:** Group all questions into ONE call to the Question tool (3 questions max per call). Provide meaningful options for each, plus the ability to type custom answers.
 
@@ -119,7 +119,7 @@ Print a summary of what was created and where. Offer to adjust any file.
 
 ## Behavior rules
 
-1. **Detect tool availability** — check if grill-with-docs is available at start. If available, use it (one question at a time, provide recommendations). If not, fall back to Question tool (group up to 3 per call).
+1. **Detect tool availability** — check if grill-me is available at start. If available, use it (one question at a time, provide recommendations). If not, fall back to Question tool (group up to 3 per call).
 2. **Never guess defaults** — every answer must come from the user.
 3. **Challenge against existing docs** — if `CONTEXT.md` or ADRs exist, cross-reference answers against them. Call out contradictions immediately.
 4. **Write all three files** — never skip a file, never write partial content.
