@@ -13,6 +13,13 @@ This isn't a fancy methodology — it's a practical software engineering practic
 
 - **Feature Spec** — Defines *what* to build next and *how* to validate it. Created per feature. Contains `plan.md`, `requirements.md`, and `validation.md` under `specs/`.
 
+## Skills
+
+- **[constitute](./constitute/SKILL.md)** — Create a project constitution (`mission.md`, `tech-stack.md`, `roadmap.md`) in `specs/` using structured questions and answers.
+- **[specify-feature](./specify-feature/SKILL.md)** — Create a feature spec (`plan.md`, `requirements.md`, `validation.md`) under `specs/` for the next unstarted roadmap phase.
+
+> **Note:** Both skills prefer `grill-with-docs` (from the mattpocock skills) for interactive questioning. If `grill-with-docs` is not available, they automatically fall back to the `Question` tool and continue to work normally.
+
 ## Workflow
 
 1. **Initiate the constitution** → review it yourself. If it's not what you want, keep updating until it is.
