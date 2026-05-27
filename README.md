@@ -12,6 +12,8 @@ skills/
 │   └── spec-driven-development/       # sub-bucket
 │       ├── constitute/                # Create project constitution
 │       └── specify-feature/           # Create feature specs
+├── in-progress/                       # bucket (unpublished)
+│   └── notion/                        # Notion page/database operations
 └── ...more buckets coming
 ```
 
