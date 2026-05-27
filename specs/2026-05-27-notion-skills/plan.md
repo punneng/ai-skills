@@ -24,9 +24,9 @@
 - [x] Implement todo operations (add, list, complete, update, delete) via Notion MCP with named references
 
 ### 4. Verification
-- [ ] Test CRUD operations with multiple pages and databases configured
-- [ ] Test named reference resolution for both pages and databases
-- [ ] Verify skills work end-to-end without search-by-title
-- [ ] Test configuration validation when IDs are missing or invalid
+- [x] Test CRUD operations with multiple pages and databases configured
+- [x] Test named reference resolution for both pages and databases
+- [x] Verify skills work end-to-end without search-by-title
+- [x] Test configuration validation when IDs are missing or invalid
 - [ ] Move skill to published bucket (e.g., `integrations/`) and add to top-level `README.md`
-- [ ] Document configuration requirements for users
+- [x] Document configuration requirements for users
