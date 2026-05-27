@@ -16,7 +16,7 @@ Generate three foundational spec files in `specs/` — `mission.md`, `tech-stack
 
 ## Flow
 
-### Step 0 — Detect project state
+### Step 0 — Detect project state and tool availability
 
 Use Glob to check if the project root has substantive files beyond common scaffolding:
 
@@ -28,9 +28,18 @@ Glob pattern: **/*.{py,rs,go,js,ts,tsx,java,c,cpp,h,swift,kt,cargo.toml,package.
 - If **no source files or config files** exist (only `.gitignore`, `README.md`, `.git/`, etc.), treat as a **new blank project**.
 - If **source or project config files exist**, treat as an **existing project**.
 
+**Detect tool availability:**
+- Check if `grill-with-docs` skill is available (look for it in the available skills list or check if its SKILL.md exists at a known path).
+- If **grill-with-docs is available**, use it for all question-asking steps.
+- If **grill-with-docs is NOT available**, fall back to the Question tool for all question-asking steps.
+
 ### Step 1a — New blank project: Get project overview
 
-Ask the user for a high-level project overview. Use the Question tool with a single open question:
+**If using grill-with-docs:** Start a grill-with-docs session to extract the project overview. Ask questions one at a time, waiting for feedback on each before continuing. Provide your recommended answer for each question.
+
+Start with: "Tell me about your project at a high level. What are you building, and what problem does it solve?"
+
+**If using Question tool:** Use the Question tool with a single open question:
 
 ```
 question: "Tell me about your project at a high level. What are you building, and what problem does it solve?"
@@ -50,7 +59,13 @@ Analyze the existing project to extract as much context as possible:
 2. **Read source tree structure** — use `read` on `src/`, `lib/`, `app/`, `components/`, etc. if they exist
 3. **Check for existing docs** — `README.md`, `docs/`, `CONTRIBUTING.md`, `ARCHITECTURE.md`
 
-Present a concise summary of what was detected (language, framework, build system, project type) and ask structured questions for any gaps. Group into ONE Question tool call:
+Present a concise summary of what was detected (language, framework, build system, project type) and ask structured questions for any gaps.
+
+**If using grill-with-docs:** Start a grill-with-docs session to fill gaps. Ask questions one at a time, waiting for feedback on each before continuing. Provide your recommended answer for each question.
+
+Start with: "I detected a [language/framework] project. I still need: [list missing info]. Can you fill in the gaps?"
+
+**If using Question tool:** Group into ONE Question tool call:
 
 ```
 question: "I detected a [language/framework] project. I still need: [list missing info]. Can you fill in the gaps?"
@@ -62,7 +77,7 @@ Wait for their answer and merge it with the detected info to form `$PROJECT_OVER
 
 ### Step 2 — Ask structured questions
 
-Group all questions into ONE call to the Question tool (3 questions max per call). Use the detection context to tailor the questions:
+Continue gathering structured information. Use the detection context to tailor the questions:
 
 **If new blank project**, ask generic questions:
 1. **Mission** — "What services will this project monitor/check? What triggers a notification? How should it behave when things go wrong (no WiFi, API down, empty results)?"
@@ -74,7 +89,9 @@ Group all questions into ONE call to the Question tool (3 questions max per call
 2. **Tech stack** — "I detected [detected tech]. Are there any other components, constraints, or trade-offs I should document? Anything missing from the stack?"
 3. **Roadmap** — "I see the project already has code. What are the remaining phases? What's the definition of done?"
 
-Provide meaningful options for each, plus the ability to type custom answers.
+**If using grill-with-docs:** Continue the grill session. Ask questions one at a time, waiting for feedback on each before continuing. Provide your recommended answer for each question.
+
+**If using Question tool:** Group all questions into ONE call to the Question tool (3 questions max per call). Provide meaningful options for each, plus the ability to type custom answers.
 
 ### Step 3 — Generate files
 
@@ -102,10 +119,11 @@ Print a summary of what was created and where. Offer to adjust any file.
 
 ## Behavior rules
 
-1. **Always use the Question tool** — never guess or fill in defaults for the user. Every answer must come from them.
-2. **Group questions** — batch related questions into single Question tool calls (max 3 per call).
-3. **Write all three files** — never skip a file, never write partial content.
-4. **Work in `specs/`** — create the directory if it doesn't exist. Write relative to the current project root.
-5. **Be concise** — keep each file focused and readable. No fluff, no filler sections.
-6. **Let the user steer** — if they give brief answers, write brief files. If they give detailed answers, match the depth.
-7. **Detect, don't ask** — automatically determine if the project is new or existing by inspecting the file system rather than asking the user.
+1. **Detect tool availability** — check if grill-with-docs is available at start. If available, use it (one question at a time, provide recommendations). If not, fall back to Question tool (group up to 3 per call).
+2. **Never guess defaults** — every answer must come from the user.
+3. **Challenge against existing docs** — if `CONTEXT.md` or ADRs exist, cross-reference answers against them. Call out contradictions immediately.
+4. **Write all three files** — never skip a file, never write partial content.
+5. **Work in `specs/`** — create the directory if it doesn't exist. Write relative to the current project root.
+6. **Be concise** — keep each file focused and readable. No fluff, no filler sections.
+7. **Let the user steer** — if they give brief answers, write brief files. If they give detailed answers, match the depth.
+8. **Detect, don't ask** — automatically determine if the project is new or existing by inspecting the file system rather than asking the user.

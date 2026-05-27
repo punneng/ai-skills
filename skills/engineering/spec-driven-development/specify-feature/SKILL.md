@@ -25,21 +25,24 @@ Read these three files before asking any questions:
 
 Store the next phase name/title as `$NEXT_PHASE` and its bullet items as `$PHASE_TASKS`.
 
-### Step 2 — Ask structured questions
+### Step 1.5 — Detect tool availability
 
-Group ALL questions into ONE call to the Question tool (max 3 questions). Ask all three dimensions at once:
+Check if `grill-with-docs` skill is available (look for it in the available skills list or check if its SKILL.md exists at a known path).
 
-1. **Feature scope** — "The next phase is **{$NEXT_PHASE}**. Which parts should this feature cover, and what should we call the directory? (e.g. YYYY-MM-DD-feature-name)"
-   - Offer 2-3 meaningful scope options based on `$PHASE_TASKS` (e.g. full phase, a subset, or a specific task)
-   - Include a custom option for the user to type their own answer
+- If **grill-with-docs is available**, invoke it for Step 2.
+- If **grill-with-docs is NOT available**, fall back to the Question tool for Step 2.
 
-2. **Key decisions & context** — "What key decisions and constraints should be recorded in requirements.md?"
-   - Offer options based on what `tech-stack.md` and `mission.md` suggest (e.g. pin assignments, framework version, partition scheme, config format)
-   - Include a custom option
+### Step 2 — Grill to crystallize the spec
 
-3. **Validation criteria** — "What defines success for this feature? What validation criteria should go into validation.md?"
-   - Offer options based on the roadmap milestone and phase tasks
-   - Include a custom option
+Cover three dimensions to resolve scope, decisions, and validation:
+
+1. **Feature scope** — What should this feature cover, and what should the directory be called? (e.g. `YYYY-MM-DD-feature-name`)
+2. **Key decisions & constraints** — What decisions, trade-offs, and constraints should go into `requirements.md`?
+3. **Validation criteria** — What defines success? What should go into `validation.md`?
+
+**If using grill-with-docs:** Invoke the grill-with-docs skill. Let the grill challenge assumptions, cross-reference with `mission.md` and `tech-stack.md`, and resolve ambiguities before moving on. Ask questions one at a time, waiting for feedback on each before continuing.
+
+**If using Question tool:** Group questions into ONE call to the Question tool (3 questions max per call). Provide meaningful options for each, plus the ability to type custom answers.
 
 ### Step 3 — Create directory
 
@@ -80,9 +83,9 @@ Mention that the spec is ready for implementation.
 
 ## Behavior rules
 
-1. **Always use the Question tool** — never guess or fill in defaults for the user. Every answer must come from them.
-2. **Group all questions** — batch all three into a single Question tool call.
-3. **Read all context files first** — mission.md, tech-stack.md, and roadmap.md must be read before asking.
+1. **Detect tool availability** — check if grill-with-docs is available at start. If available, use it. If not, fall back to Question tool.
+2. **Never guess defaults** — every answer must come from the user.
+3. **Read all context files first** — mission.md, tech-stack.md, and roadmap.md must be read before starting the grill.
 4. **Write all three files** — never skip a file, never write partial content.
 5. **Work in `specs/`** — create the dated subdirectory under specs/.
 6. **Follow tech-stack.md** — all technology decisions in the spec files must match what's in tech-stack.md.
