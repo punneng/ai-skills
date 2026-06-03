@@ -41,6 +41,14 @@ If `Status` is missing, the skill should prompt the user to add it or create it 
 
 Read `NOTION_DATABASES` from environment. Parse and look up `todo` entry. If not found, prompt the user to configure `databases.todo`.
 
+### Step 1.5 — Validate database ID (first use only)
+
+On first invocation, validate the database ID:
+
+1. Call `notion_API-retrieve-a-database` with the `databases.todo` ID
+2. If it returns an error, stop with: "Cannot access database `databases.todo`. Check your `NOTION_DATABASES` env var."
+3. Cache validation result for the session
+
 ### Step 2 — Execute operation
 
 #### Add todo
@@ -57,13 +65,9 @@ Use `notion_API-post-page` with:
 
 #### List todos
 
-First, resolve the `data_source_id`:
-1. Call `notion_API-retrieve-a-database` with the compact `database_id`
-2. Extract `data_sources[0].id` → this is the `data_source_id`
-
-Then use `notion_API-query-data-source` with:
-- `data_source_id`: the resolved UUID from `data_sources`
-- `filter`: optional, filter by status (e.g., only `todo` or `in_progress`)
+Use `notion_API-query-data-source` with:
+- `data_source_id`: the configured database ID (`databases.todo` IS the `data_source_id`)
+- `filter`: optional, filter by status (e.g., `{ "property": "Status", "select": { "equals": "todo" } }`)
 - `sorts`: omit — use default order (Notion returns creation order)
 
 Display results as a numbered list with status indicators.
