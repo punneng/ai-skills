@@ -1,12 +1,12 @@
 ---
 name: notion-todo
-description: Manage a todo list stored in Notion using explicit database IDs via Notion MCP.
+description: Manage a todo list stored in a Notion data source via Notion MCP.
 trigger: /notion-todo
 ---
 
 # /notion-todo — Notion-backed Todo
 
-Manage a todo list stored in a Notion database. Uses the `notion` skill's configuration (`NOTION_DATABASES` env var) to resolve the todo database by name.
+Manage a todo list stored in a Notion data source. Uses `MCP_NOTION_DATA_SOURCES_IDS` env var to resolve the data source by position (first entry is the todo list).
 
 ## When to use
 
@@ -16,37 +16,45 @@ Manage a todo list stored in a Notion database. Uses the `notion` skill's config
 
 ## Configuration
 
-Requires `NOTION_DATABASES` env var with a `todo` entry:
+Requires `MCP_NOTION_DATA_SOURCES_IDS` env var with comma-separated data source IDs:
 
 ```bash
-NOTION_DATABASES="todo:x9y8z7w6v5u4..."
+MCP_NOTION_DATA_SOURCES_IDS="x9y8z7w6v5u4...,a1b2c3d4e5f6..."
 ```
 
-The skill resolves `databases.todo` to the actual database ID.
+The first entry is used as the todo data source.
 
-## Database Schema
+## Data Source Schema
 
-The Notion database should have these properties:
+The Notion data source should have these properties:
 
 | Property | Type | Purpose |
 |----------|------|---------|
 | `Name` | title | Todo item text |
 | `Status` | select | `todo`, `in_progress`, `done` |
 
-If `Status` is missing, the skill should prompt the user to add it or create it via `notion_API-update-a-data-source`.
+If `Status` is missing, prompt the user to add it or create it via `notion_API-update-a-data-source`.
 
 ## Flow
 
-### Step 1 — Resolve database
+### Step 1 — Resolve data source
 
-Read `NOTION_DATABASES` from environment. Parse and look up `todo` entry. If not found, prompt the user to configure `databases.todo`.
+Read `MCP_NOTION_DATA_SOURCES_IDS` from environment. Split by comma, take the first entry as the todo data source ID. If the env var is unset or the list is empty, prompt the user to configure `MCP_NOTION_DATA_SOURCES_IDS`.
+
+### Step 1.5 — Validate data source ID (first use only)
+
+On first invocation, validate the data source ID:
+
+1. Call `notion_API-retrieve-a-data-source` with the resolved ID
+2. If it returns an error, stop with: "Cannot access data source `<id>`. Check your `MCP_NOTION_DATA_SOURCES_IDS` env var."
+3. Cache validation result for the session
 
 ### Step 2 — Execute operation
 
 #### Add todo
 
 Use `notion_API-post-page` with:
-- `parent`: `{ "database_id": "<resolved-todo-db-id>" }`
+- `parent`: `{ "type": "data_source_id", "data_source_id": "<resolved-data-source-id>" }`
 - `properties`:
   ```json
   {
@@ -57,14 +65,9 @@ Use `notion_API-post-page` with:
 
 #### List todos
 
-First, resolve the `data_source_id`:
-1. Call `notion_API-retrieve-a-database` with the compact `database_id`
-2. Extract `data_sources[0].id` → this is the `data_source_id`
-
-Then use `notion_API-query-data-source` with:
-- `data_source_id`: the resolved UUID from `data_sources`
-- `filter`: optional, filter by status (e.g., only `todo` or `in_progress`)
-- `sorts`: omit — use default order (Notion returns creation order)
+Use `notion_API-query-data-source` with:
+- `data_source_id`: the resolved data source ID
+- `filter`: optional, filter by status (e.g., `{ "property": "Status", "select": { "equals": "todo" } }`)
 
 Display results as a numbered list with status indicators.
 
@@ -83,13 +86,13 @@ Use `notion_API-patch-page` with:
 
 Use `notion_API-patch-page` with:
 - `page_id`: the todo page ID
-- `properties`: fields to update (Name, Status, Due, etc.)
+- `properties`: fields to update (Name, Status, etc.)
 
 #### Delete todo
 
 Use `notion_API-patch-page` with:
 - `page_id`: the todo page ID
-- `archived`: true
+- `in_trash`: true
 
 ### Step 3 — Confirm
 
@@ -101,7 +104,7 @@ Report the result:
 
 ## Behavior rules
 
-1. **Never use search-by-title** — always resolve `databases.todo` from env vars
-2. **Fail gracefully** — clear error if `NOTION_DATABASES` is unset or `todo` entry missing
+1. **Never use search-by-title** — always resolve data source ID from `MCP_NOTION_DATA_SOURCES_IDS`
+2. **Fail gracefully** — clear error if `MCP_NOTION_DATA_SOURCES_IDS` is unset or empty
 3. **Support partial matching** — when user references a todo by number or partial text, match against the list results
 4. **Never log raw IDs** — print only todo text and status

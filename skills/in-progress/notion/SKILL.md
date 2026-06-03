@@ -55,10 +55,9 @@ databases = { "todo": "x9y8z7w6...", "notes": "m1n2o3p4..." }
 On first invocation, validate each configured ID:
 
 1. For each page ID, call `notion_API-retrieve-a-page` with the ID
-2. For each database ID, call `notion_API-retrieve-a-database` with the ID
-3. Extract `data_sources[0].id` from the database response and cache it as the `data_source_id` for later queries
-4. Report any IDs that return errors (likely invalid or lacking permissions)
-5. Cache validation result for the session — skip on subsequent calls
+2. For each database ID, call `notion_API-retrieve-a-database` with the ID — the returned ID doubles as the `data_source_id` for queries
+3. Report any IDs that return errors (likely invalid or lacking permissions)
+4. Cache validation result for the session — skip on subsequent calls
 
 ### Step 2 — Resolve named reference
 
@@ -91,20 +90,16 @@ Use `notion_API-patch-page` with:
 
 #### Query database
 
-First, resolve the `data_source_id` from the configured `database_id`:
-1. Call `notion_API-retrieve-a-database` with the compact `database_id`
-2. Extract `data_sources[0].id` → this is the `data_source_id`
-
-Then use `notion_API-query-data-source` with:
-- `data_source_id`: the resolved UUID from `data_sources`
-- `filter`: optional filter conditions
+Use `notion_API-query-data-source` with:
+- `data_source_id`: the configured database ID (`databases.<name>` IS the `data_source_id`)
+- `filter`: optional filter conditions in Notion filter format (e.g., `{ "property": "Status", "select": { "equals": "todo" } }`)
 - `sorts`: optional sort configuration
 - `page_size`: number of results (default 100)
 
 #### Get database schema
 
 Use `notion_API-retrieve-a-data-source` with:
-- `data_source_id`: resolved database ID
+- `data_source_id`: the configured database ID (`databases.<name>` IS the `data_source_id`)
 
 ### Step 4 — Confirm
 
