@@ -25,24 +25,15 @@ Read these three files before asking any questions:
 
 Store the next phase name/title as `$NEXT_PHASE` and its bullet items as `$PHASE_TASKS`.
 
-### Step 1.5 — Detect tool availability
-
-Check if `grill-me` skill is available (look for it in the available skills list or check if its SKILL.md exists at a known path).
-
-- If **grill-me is available**, invoke it for Step 2.
-- If **grill-me is NOT available**, fall back to the Question tool for Step 2.
-
 ### Step 2 — Grill to crystallize the spec
 
-Cover three dimensions to resolve scope, decisions, and validation:
+Invoke the `grill-me` skill. Cover three dimensions:
 
 1. **Feature scope** — What should this feature cover, and what should the directory be called? (e.g. `YYYY-MM-DD-feature-name`)
 2. **Key decisions & constraints** — What decisions, trade-offs, and constraints should go into `requirements.md`?
 3. **Validation criteria** — What defines success? What should go into `validation.md`?
 
-**If using grill-me:** Invoke the grill-me skill. Let the grill challenge assumptions and resolve ambiguities before moving on. Ask questions one at a time, waiting for feedback on each before continuing.
-
-**If using Question tool:** Group questions into ONE call to the Question tool (3 questions max per call). Provide meaningful options for each, plus the ability to type custom answers.
+Let the grill challenge assumptions and resolve ambiguities before moving on. Ask questions one at a time, waiting for feedback on each before continuing.
 
 ### Step 3 — Create directory
 
@@ -83,11 +74,10 @@ Mention that the spec is ready for implementation.
 
 ## Behavior rules
 
-1. **Detect tool availability** — check if grill-me is available at start. If available, use it. If not, fall back to Question tool.
+1. **Read all context files first** — mission.md, tech-stack.md, and roadmap.md must be read before starting the grill.
 2. **Never guess defaults** — every answer must come from the user.
-3. **Read all context files first** — mission.md, tech-stack.md, and roadmap.md must be read before starting the grill.
-4. **Write all three files** — never skip a file, never write partial content.
-5. **Work in `specs/`** — create the dated subdirectory under specs/.
-6. **Follow tech-stack.md** — all technology decisions in the spec files must match what's in tech-stack.md.
-7. **Be concise** — keep each file focused and readable. No fluff, no filler sections.
-8. **Let the user steer** — if they give brief answers, write brief files. If they give detailed answers, match the depth.
+3. **Write all three files** — never skip a file, never write partial content.
+4. **Work in `specs/`** — create the dated subdirectory under specs/.
+5. **Follow tech-stack.md** — all technology decisions in the spec files must match what's in tech-stack.md.
+6. **Be concise** — keep each file focused and readable. No fluff, no filler sections.
+7. **Let the user steer** — if they give brief answers, write brief files. If they give detailed answers, match the depth.

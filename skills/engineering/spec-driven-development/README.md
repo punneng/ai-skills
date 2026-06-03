@@ -16,9 +16,8 @@ This isn't a fancy methodology — it's a practical software engineering practic
 ## Skills
 
 - **[constitute](./constitute/SKILL.md)** — Create a project constitution (`mission.md`, `tech-stack.md`, `roadmap.md`) in `specs/` using structured questions and answers.
+- **[grill-me](./grill-me/SKILL.md)** — Interview the user relentlessly about a plan or design until reaching shared understanding. Ported from [mattpocock/grill-me](https://github.com/mattpocock/skills/blob/main/skills/productivity/grill-me/SKILL.md).
 - **[specify-feature](./specify-feature/SKILL.md)** — Create a feature spec (`plan.md`, `requirements.md`, `validation.md`) under `specs/` for the next unstarted roadmap phase.
-
-> **Note:** Both skills prefer `grill-with-docs` (from the mattpocock skills) for interactive questioning. If `grill-with-docs` is not available, they automatically fall back to the `Question` tool and continue to work normally.
 
 ## Workflow
 
