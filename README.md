@@ -38,4 +38,5 @@ ln -s "$(pwd)/skills/engineering/spec-driven-development/constitute" ~/.config/o
 <!-- TODO: add README for engineering/ -->
 
 - **spec-driven-development/constitute** — Create a project constitution (mission.md, tech-stack.md, roadmap.md) in `specs/` using structured Q&A.
+- **spec-driven-development/grill-me** — Interview the user relentlessly about a plan or design until reaching shared understanding. Ported from [mattpocock/grill-me](https://github.com/mattpocock/skills/blob/main/skills/productivity/grill-me/SKILL.md).
 - **spec-driven-development/specify-feature** — Create a feature spec (plan.md, requirements.md, validation.md) under `specs/` for the next unstarted roadmap phase.
